@@ -5,13 +5,14 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 
+alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+
 alias clearnamespace='kubectl delete namespace $(currentnamespace) ; kubectl create namespace $(currentnamespace)'
 alias currentnamespace="kubectl config view --minify -o jsonpath='{..namespace}'; echo"
 alias getnamespace=currentnamespace
 
 alias ta='tmux attach'
 
-alias v='nvim'
 alias vi='nvim'
 alias vim='nvim'
 

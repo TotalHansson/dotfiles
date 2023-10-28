@@ -120,6 +120,8 @@ fi
 
 export PATH=$PATH:/usr/local/go/bin
 export PATH=$PATH:~/.cargo/bin
+export PATH=$PATH:~/go/bin
+
 . "$HOME/.cargo/env"
 
 source /home/hansson/programming/repos/alacritty/extra/completions/alacritty.bash
