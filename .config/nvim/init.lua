@@ -312,6 +312,7 @@ vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = tr
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
 vim.keymap.set('n', '<C-b>', '<Cmd>Neotree toggle<CR>')
+vim.keymap.set({ 'v', 'x' }, '<leader>p', [["_dP]])
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
