@@ -199,6 +199,3 @@ exec xinput set-prop "AlpsPS/2 ALPS DualPoint TouchPad" "libinput Disable While 
 
 # Something that somehow removes screen tearing
 exec --no-startup-id picom -b --vsync --backend glx
-
-# Start ssh-agent so I don't have to keep typing my SSH key password when interacting with github
-eval "$(ssh-agent -s)"
