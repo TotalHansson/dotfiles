@@ -122,6 +122,8 @@ export PATH=$PATH:/usr/local/go/bin
 export PATH=$PATH:~/.cargo/bin
 export PATH=$PATH:~/go/bin
 
+export EDITOR='/usr/local/bin/nvim'
+
 . "$HOME/.cargo/env"
 
 source /home/hansson/programming/repos/alacritty/extra/completions/alacritty.bash
