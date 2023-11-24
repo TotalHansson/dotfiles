@@ -6,6 +6,8 @@ alias ...='cd ../..'
 alias ....='cd ../../..'
 
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+complete -o bashdefault -o default -o nospace -F __git_wrap__git_main config
+
 alias rts='cd ~/programming/go/RTS-Game-Engine'
 
 alias clearnamespace='kubectl delete namespace $(currentnamespace) ; kubectl create namespace $(currentnamespace)'
