@@ -1,0 +1,1 @@
+[ $(brightnessctl -m info | awk -F ',' '{ print $4 }' | tr -d '%') -gt 10 ] && brightnessctl --quiet set 10%- || brightnessctl --quiet set 1%
