@@ -76,3 +76,14 @@ Replicate your dotfiles by cloning down the repo, configuring it, and checking o
 
     Git doesn’t want to overwrite your local files. Back up the files if they’re useful, delete them if they aren’t.
 
+
+# Programs used
+
+In no particular order:
+* alacritty
+* i3
+* i3status
+* nvim
+* picom
+* feh
+
