@@ -197,9 +197,9 @@ bar {
 }
 
 # Enable touchpad tap to click
-exec xinput set-prop "AlpsPS/2 ALPS DualPoint TouchPad" "libinput Tapping Enabled" 1
+exec --no-startup-id xinput set-prop "AlpsPS/2 ALPS DualPoint TouchPad" "libinput Tapping Enabled" 1
 # Keep touchpad enabled while typing
-exec xinput set-prop "AlpsPS/2 ALPS DualPoint TouchPad" "libinput Disable While Typing Enabled" 0
+exec --no-startup-id xinput set-prop "AlpsPS/2 ALPS DualPoint TouchPad" "libinput Disable While Typing Enabled" 0
 
 # picom window compositor. Handles window decorations and rendering related tasks such as fading inactive windows and vsync
 exec --no-startup-id picom --daemon
