@@ -83,7 +83,16 @@ require('lazy').setup({
   -- Keep current context as the top lines of the editor
   'nvim-treesitter/nvim-treesitter-context',
 
+  -- GLSL syntax highlighting
   'tikhomirov/vim-glsl',
+
+  -- Toggle bools
+  {
+    'gerazov/toggle-bool.nvim',
+    opts = {
+      mapping = '<C-t>',
+    },
+  },
 
   -- NOTE: This is where your plugins related to LSP can be installed.
   --  The configuration is done below. Search for lspconfig to find it below.
@@ -313,8 +322,27 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
+-- Toggle file tree sidebar
 vim.keymap.set('n', '<C-b>', '<Cmd>Neotree toggle<CR>')
+
+-- Paste over selected, without yanking
 vim.keymap.set({ 'v', 'x' }, '<leader>p', [["_dP]])
+
+-- Open LSP Signature docs in insert mode
+vim.keymap.set('i', '<C-k>', vim.lsp.buf.signature_help)
+
+-- windows
+vim.keymap.set('n', '<A-k>', '<C-w>k')
+vim.keymap.set('n', '<A-j>', '<C-w>j')
+vim.keymap.set('n', '<A-h>', '<C-w>h')
+vim.keymap.set('n', '<A-l>', '<C-w>l')
+vim.keymap.set('n', '<A-Up>', ':resize +2<CR>')
+vim.keymap.set('n', '<A-Down>', ':resize -2<CR>')
+vim.keymap.set('n', '<A-Left>', ':vertical resize -2<CR>')
+vim.keymap.set('n', '<A-Right>', ':vertical resize +2<CR>')
+
+-- Exit insert mode with jj
+vim.keymap.set('i', 'jj', '<Esc>')
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
@@ -573,11 +601,21 @@ cmp.setup {
     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-Space>'] = cmp.mapping.complete {},
-    ['<CR>'] = cmp.mapping.confirm {
-      behavior = cmp.ConfirmBehavior.Replace,
-      select = false,
-    },
-    ['<Esc>'] = cmp.mapping.abort(),
+    ['<CR>'] = cmp.mapping(function(fallback)
+      if not cmp.visible() then
+        fallback()
+      end
+      if cmp.get_selected_entry() then
+        cmp.confirm({select = true})
+      else
+        cmp.abort()
+      end
+    end, { 'i', 'c'}),
+    -- ['<CR>'] = cmp.mapping.confirm {
+    --   behavior = cmp.ConfirmBehavior.Replace,
+    --   select = false,
+    -- },
+    -- ['<Esc>'] = cmp.mapping.abort(),
     ['<Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
