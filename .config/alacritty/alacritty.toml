@@ -1,0 +1,17 @@
+import = ["/home/mhanss62/.config/alacritty/themes/themes/doom_one.toml"]
+
+[font]
+size = 11.0
+
+[font.normal]
+family = "DroidSansM Nerd Font Mono"
+
+[scrolling]
+history = 100000
+multiplier = 6
+
+[window]
+opacity = 1.0
+
+[window.padding]
+x = 5
