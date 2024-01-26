@@ -127,5 +127,5 @@ export EDITOR='/usr/local/bin/nvim'
 
 . "$HOME/.cargo/env"
 
-source /home/hansson/programming/repos/alacritty/extra/completions/alacritty.bash
+source ~/programming/repos/alacritty/extra/completions/alacritty.bash
 

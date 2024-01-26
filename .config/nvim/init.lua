@@ -86,6 +86,9 @@ require('lazy').setup({
   -- GLSL syntax highlighting
   'tikhomirov/vim-glsl',
 
+  -- Lint runner
+  'mfussenegger/nvim-lint',
+
   -- Toggle bools
   {
     'gerazov/toggle-bool.nvim',
@@ -244,7 +247,13 @@ require('lazy').setup({
       "MunifTanjim/nui.nvim",
     },
     config = function ()
-      require('neo-tree').setup {}
+      require('neo-tree').setup {
+        filesystem = {
+          filtered_items = {
+            visible = true, -- Show hidden files
+          },
+        },
+      }
     end,
   },
 
@@ -578,6 +587,15 @@ mason_lspconfig.setup_handlers {
   end,
 }
 
+require('lint').linters_by_ft = {
+  go = {'golangcilint',}
+}
+vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+  callback = function ()
+    require('lint').try_lint()
+  end,
+})
+
 -- [[ Configure nvim-cmp ]]
 -- See `:help cmp`
 local cmp = require 'cmp'
@@ -601,16 +619,19 @@ cmp.setup {
     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-Space>'] = cmp.mapping.complete {},
-    ['<CR>'] = cmp.mapping(function(fallback)
-      if not cmp.visible() then
-        fallback()
-      end
-      if cmp.get_selected_entry() then
-        cmp.confirm({select = true})
-      else
-        cmp.abort()
-      end
-    end, { 'i', 'c'}),
+    ['<CR>'] = cmp.mapping({
+      i = function(fallback)
+        if not cmp.visible() then
+          fallback()
+        end
+        if cmp.get_selected_entry() then
+          cmp.confirm({select = true})
+        else
+          cmp.abort()
+        end
+      end,
+      c = cmp.mapping.confirm({select = true}),
+    }),
     -- ['<CR>'] = cmp.mapping.confirm {
     --   behavior = cmp.ConfirmBehavior.Replace,
     --   select = false,

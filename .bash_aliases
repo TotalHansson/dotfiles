@@ -5,14 +5,16 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 
-# [e]dit [c]onfig [a]liases
-alias eca='nvim ~/.bash_aliases'
+# [e]dit [c]onfig [b]ash_[a]liases
+alias ecba='nvim ~/.bash_aliases'
 # [e]dit [c]onfig [b]ash
 alias ecb='nvim ~/.bashrc'
 # [e]dit [c]onfig [i]3
 alias eci='nvim ~/.config/i3/config'
 # [e]dit [c]onfig [n]vim
 alias ecn='nvim ~/.config/nvim/init.lua'
+# [e]dit [c]onfig [a]lacritty
+alias eca='nvim ~/.config/alacritty/alacritty.toml'
 
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 complete -o bashdefault -o default -o nospace -F __git_wrap__git_main config
