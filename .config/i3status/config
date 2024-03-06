@@ -35,6 +35,6 @@ tztime local {
 }
 
 tztime time {
-        format = " %H:%M:%S "
+        format = " %H:%M "
         separator_block_width = 25
 }

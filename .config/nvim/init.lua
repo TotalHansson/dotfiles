@@ -133,7 +133,7 @@ require('lazy').setup({
   },
 
   -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim', opts = {} },
+  { 'folke/which-key.nvim',  opts = {} },
   {
     -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
@@ -188,11 +188,43 @@ require('lazy').setup({
     -- See `:help lualine.txt`
     opts = {
       options = {
-        icons_enabled = false,
-        theme = 'onedark',
-        component_separators = '|',
-        section_separators = '',
+        icons_enabled = true,
+        theme = 'auto',
+        component_separators = { left = '', right = '' },
+        section_separators = { left = '', right = '' },
+        disabled_filetypes = {
+          statusline = {},
+          winbar = {},
+        },
+        ignore_focus = {},
+        always_divide_middle = true,
+        globalstatus = false,
+        refresh = {
+          statusline = 1000,
+          tabline = 1000,
+          winbar = 1000,
+        }
       },
+      sections = {
+        lualine_a = { 'mode' },
+        lualine_b = { 'branch', 'diff', 'diagnostics' },
+        lualine_c = { { 'filename', path = 1 } },
+        lualine_x = { 'encoding', 'fileformat', 'filetype' },
+        lualine_y = { 'progress' },
+        lualine_z = { 'location' }
+      },
+      inactive_sections = {
+        lualine_a = {},
+        lualine_b = {},
+        lualine_c = { { 'filename', path = 1 } },
+        lualine_x = { 'location' },
+        lualine_y = {},
+        lualine_z = {}
+      },
+      tabline = {},
+      winbar = {},
+      inactive_winbar = {},
+      extensions = {}
     },
   },
 
@@ -246,7 +278,7 @@ require('lazy').setup({
       "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
       "MunifTanjim/nui.nvim",
     },
-    config = function ()
+    config = function()
       require('neo-tree').setup {
         filesystem = {
           filtered_items = {
@@ -257,10 +289,31 @@ require('lazy').setup({
     end,
   },
 
+  { -- Autoformat
+    'stevearc/conform.nvim',
+    opts = {
+      notify_on_error = false,
+      format_on_save = {
+        timeout_ms = 500,
+        lsp_fallback = true,
+      },
+      formatters_by_ft = {
+        lua = { 'stylua' },
+        go = { 'gofumpt' },
+        -- Conform can also run multiple formatters sequentially
+        -- python = { "isort", "black" },
+        --
+        -- You can use a sub-list to tell conform to run *until* a formatter
+        -- is found.
+        -- javascript = { { "prettierd", "prettier" } },
+      },
+    },
+  },
+
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
   --       Uncomment any of the lines below to enable them.
-  'kickstart.plugins.autoformat',
+  -- 'kickstart.plugins.autoformat',
   -- require 'kickstart.plugins.debug',
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
@@ -277,7 +330,7 @@ require('lazy').setup({
 -- NOTE: You can change these options as you wish!
 
 -- Set highlight on search
-vim.o.hlsearch = false
+vim.o.hlsearch = true
 
 -- Make line numbers default
 vim.wo.number = true
@@ -309,6 +362,8 @@ vim.wo.signcolumn = 'yes'
 vim.o.updatetime = 250
 vim.o.timeoutlen = 500
 
+vim.opt.cursorline = true
+
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = 'menuone,noselect'
 
@@ -317,6 +372,9 @@ vim.o.termguicolors = true
 
 -- Keep some lines above/below cursor when moving
 vim.o.scrolloff = 8
+
+vim.o.foldmethod = 'indent'
+vim.o.foldlevelstart = 99
 
 -- Unless you are still migrating, remove the deprecated commands from v1.x
 vim.cmd([[ let g:neo_tree_remove_legacy_commands = 1 ]])
@@ -352,6 +410,9 @@ vim.keymap.set('n', '<A-Right>', ':vertical resize +2<CR>')
 
 -- Exit insert mode with jj
 vim.keymap.set('i', 'jj', '<Esc>')
+
+-- Clear search highlight on esc
+vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
@@ -588,10 +649,10 @@ mason_lspconfig.setup_handlers {
 }
 
 require('lint').linters_by_ft = {
-  go = {'golangcilint',}
+  go = { 'golangcilint', }
 }
 vim.api.nvim_create_autocmd({ "BufWritePost" }, {
-  callback = function ()
+  callback = function()
     require('lint').try_lint()
   end,
 })
@@ -625,12 +686,11 @@ cmp.setup {
           fallback()
         end
         if cmp.get_selected_entry() then
-          cmp.confirm({select = true})
+          cmp.confirm({ select = true })
         else
           cmp.abort()
         end
       end,
-      c = cmp.mapping.confirm({select = true}),
     }),
     -- ['<CR>'] = cmp.mapping.confirm {
     --   behavior = cmp.ConfirmBehavior.Replace,
@@ -655,6 +715,16 @@ cmp.setup {
         fallback()
       end
     end, { 'i', 's' }),
+    ['<C-l>'] = cmp.mapping(function()
+      if luasnip.expand_or_locally_jumpable() then
+        luasnip.expand_or_jump()
+      end
+    end, { 'i', 's' }),
+    ['<C-h>'] = cmp.mapping(function()
+      if luasnip.locally_jumpable(-1) then
+        luasnip.jump(-1)
+      end
+    end, { 'i', 's' }),
   },
   sources = {
     { name = 'nvim_lsp' },
@@ -668,12 +738,15 @@ local i = luasnip.insert_node
 -- Custom snippets
 luasnip.add_snippets("go", {
   s("iferr", {
-    t({"if err != nil {", "\t"}), i(1, ""), t({"", "}", ""})
-		-- equivalent to "${1:cond} ? ${2:then} : ${3:else}"
-		-- i(1, "cond"), t(" ? "), i(2, "then"), t(" : "), i(3, "else")
-	}),
+    t({ "if err != nil {", "\t" }), i(1, ""), t({ "", "}", "" })
+    -- equivalent to "${1:cond} ? ${2:then} : ${3:else}"
+    -- i(1, "cond"), t(" ? "), i(2, "then"), t(" : "), i(3, "else")
+  }),
   s("print", {
     t("fmt.Printf(\""), i(1, ""), t("\\n\""), i(2, ""), t(")")
+  }),
+  s("stderr", {
+    t("fmt.Fprintf(os.Stderr, \"@@ "), i(1, ""), t("\\n\""), i(2, ""), t(")")
   })
 })
 
@@ -685,7 +758,7 @@ require('onedark').setup {
   },
 }
 require('onedark').load()
+vim.api.nvim_set_hl(0, 'Folded', { fg = 'Gray' })
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
-

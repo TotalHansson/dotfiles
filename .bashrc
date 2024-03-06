@@ -128,4 +128,4 @@ export EDITOR='/usr/local/bin/nvim'
 . "$HOME/.cargo/env"
 
 source ~/programming/repos/alacritty/extra/completions/alacritty.bash
-
+source /usr/share/bash-completion/completions/git
