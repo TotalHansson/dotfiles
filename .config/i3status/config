@@ -14,27 +14,34 @@ general {
 
 order += "wireless _first_"
 order += "battery all"
+order += "volume master"
 order += "tztime local"
 order += "tztime time"
 
 wireless _first_ {
         format_up = "W: (%quality at %essid)"
         format_down = "W: down"
-        separator_block_width = 25
+        separator_block_width = 30
 }
 
 battery all {
         format = "%status %percentage %remaining"
         format_percentage = "%.01f%s"
-        separator_block_width = 25
+        separator_block_width = 30
+}
+
+volume master {
+        format = "♪: %volume"
+        format_muted = "♪: muted (%volume)"
+        separator_block_width = 30
 }
 
 tztime local {
-        format = " %Y-%m-%d "
-        separator_block_width = 25
+        format = "%Y-%m-%d"
+        separator_block_width = 30
 }
 
 tztime time {
-        format = " %H:%M "
-        separator_block_width = 25
+        format = "%H:%M  "
+        separator_block_width = 30
 }
