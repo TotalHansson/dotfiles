@@ -221,7 +221,7 @@ require('lazy').setup({
         lualine_a = { 'mode' },
         lualine_b = { 'branch', 'diff', 'diagnostics' },
         lualine_c = { { 'filename', path = 1 } },
-        lualine_x = { 'encoding', 'fileformat', 'filetype' },
+        lualine_x = { {'searchcount', maxcount=9999, timeout=500}, 'filetype' },
         lualine_y = { 'progress' },
         lualine_z = { 'location' }
       },
@@ -343,6 +343,8 @@ require('lazy').setup({
 
 -- Set highlight on search
 vim.o.hlsearch = true
+-- Disable default [x/99] search result since it's added to lualine
+vim.o.shortmess = vim.o.shortmess .. 'S'
 
 -- Make line numbers default
 vim.wo.number = true
@@ -764,10 +766,6 @@ luasnip.add_snippets("go", {
 
 require('onedark').setup {
   style = 'dark',
-  transparent = true,
-  lualine = {
-    transparent = true,
-  },
 }
 require('onedark').load()
 vim.api.nvim_set_hl(0, 'Folded', { fg = 'Gray' })
