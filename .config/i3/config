@@ -237,3 +237,6 @@ exec --no-startup-id ~/.fehbg
 
 # Authentication client to let unpriveleged processes talk to priveleged ones
 exec --no-startup-id /usr/bin/lxpolkit
+
+# Don't auto focus peek preview window
+no_focus [title="^Peek preview$"]
