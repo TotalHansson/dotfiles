@@ -301,27 +301,6 @@ require('lazy').setup({
     end,
   },
 
-  { -- Autoformat
-    'stevearc/conform.nvim',
-    opts = {
-      notify_on_error = false,
-      format_on_save = {
-        timeout_ms = 500,
-        lsp_fallback = true,
-      },
-      formatters_by_ft = {
-        lua = { 'stylua' },
-        go = { 'gofumpt' },
-        -- Conform can also run multiple formatters sequentially
-        -- python = { "isort", "black" },
-        --
-        -- You can use a sub-list to tell conform to run *until* a formatter
-        -- is found.
-        -- javascript = { { "prettierd", "prettier" } },
-      },
-    },
-  },
-
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
   --       Uncomment any of the lines below to enable them.
@@ -421,9 +400,6 @@ vim.keymap.set('n', '<A-Up>', ':resize +2<CR>')
 vim.keymap.set('n', '<A-Down>', ':resize -2<CR>')
 vim.keymap.set('n', '<A-Left>', ':vertical resize -2<CR>')
 vim.keymap.set('n', '<A-Right>', ':vertical resize +2<CR>')
-
--- Exit insert mode with jj
-vim.keymap.set('i', 'jj', '<Esc>')
 
 -- Clear search highlight on esc
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
