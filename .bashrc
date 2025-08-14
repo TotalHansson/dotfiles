@@ -114,11 +114,13 @@ if [ -f ~/.bash_aliases ]; then
 fi
 
 export PATH=$PATH:/usr/local/go/bin
+export PATH=$PATH:/opt/nvim-linux64/bin
 export PATH=$PATH:~/scripts
 export PATH=$PATH:~/.cargo/bin
 export PATH=$PATH:~/go/bin
 
-export EDITOR='/usr/local/bin/nvim'
+export EDITOR='/opt/nvim-linux64/bin/nvim'
+
 
 . "$HOME/.cargo/env"
 

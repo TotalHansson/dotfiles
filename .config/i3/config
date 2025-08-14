@@ -51,6 +51,23 @@ bindsym Ctrl+Print exec --no-startup-id feh -x /tmp/screenshot.png
 bindsym XF86MonBrightnessUp exec --no-startup-id brightness-up
 bindsym XF86MonBrightnessDown exec --no-startup-id brightness-down
 
+# Keyboard repeat delay and rate
+exec_always --no-startup-id xset r rate 300 40
+
+# Bind caps to escape
+exec_always --no-startup-id setxkbmap -option caps:escape_shifted_capslock
+
+# Enable touchpad tap to click
+exec_always --no-startup-id xinput set-prop "ELAN0763:00 04F3:31EC Touchpad" "libinput Tapping Enabled" 1
+# Keep touchpad enabled while typing
+exec_always --no-startup-id xinput set-prop "ELAN0763:00 04F3:31EC Touchpad" "libinput Disable While Typing Enabled" 0
+# Lower office mouse speed
+# exec --no-startup-id xinput set-prop "PixA琀 USB Optical Mouse" "libinput Accel Speed" -0.8
+# Lower home mouse speed
+exec_always --no-startup-id xinput set-prop "Logitech Gaming Mouse G502" "libinput Accel Speed" -0.6
+
+# bindsym $mod+space exec --no-startup-id toggle-keyboard-layout
+
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
@@ -93,6 +110,8 @@ bindsym $mod+Shift+l move right
 
 # move focused workspace
 bindsym $mod+Ctrl+h move workspace to output left
+bindsym $mod+Ctrl+j move workspace to output down
+bindsym $mod+Ctrl+k move workspace to output up
 bindsym $mod+Ctrl+l move workspace to output right
 
 # alternatively, you can use the cursor keys:
@@ -209,27 +228,30 @@ bar {
         status_command i3status
 }
 
-# Enable touchpad tap to click
-exec --no-startup-id xinput set-prop "AlpsPS/2 ALPS DualPoint TouchPad" "libinput Tapping Enabled" 1
-# Keep touchpad enabled while typing
-exec --no-startup-id xinput set-prop "AlpsPS/2 ALPS DualPoint TouchPad" "libinput Disable While Typing Enabled" 0
-
 # picom window compositor. Handles window decorations and rendering related tasks such as fading inactive windows and vsync
 exec --no-startup-id picom --daemon
 
 # Styling?
-# gaps inner 1px
-default_border pixel 0
-# hide_edge_borders both
+# gaps inner 20px
+# gaps outer 30px
+# smart_gaps on
+default_border pixel 2
+hide_edge_borders smart
 
 
-set $transp #00000000
 # class                 border  backgr. text    indicator child_border
-client.focused          #4c7899 #285577 #ffffff #2e9ef4   $transp
-client.focused_inactive #333333 #5f676a #ffffff #484e50   $transp
-client.unfocused        #333333 #222222 #888888 #292d2e   $transp
-client.urgent           #2f343a #900000 #ffffff #900000   $transp
-client.placeholder      #000000 #0c0c0c #ffffff #000000   $transp
+client.focused          #4c7899 #285577 #ffffff #2e9ef4   #285577
+client.focused_inactive #333333 #5f676a #ffffff #484e50   #5f676a
+client.unfocused        #333333 #222222 #888888 #292d2e   #222222
+client.urgent           #2f343a #900000 #ffffff #900000   #900000
+client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
+
+# set $transp #00000000
+# client.focused          #4c7899 #285577 #ffffff #2e9ef4   $transp
+# client.focused_inactive #333333 #5f676a #ffffff #484e50   #ff0000
+# client.unfocused        #333333 #222222 #888888 #292d2e   $transp
+# client.urgent           #2f343a #900000 #ffffff #900000   $transp
+# client.placeholder      #000000 #0c0c0c #ffffff #000000   $transp
 client.background       #ffffff
 
 # Background image provider
