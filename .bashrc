@@ -84,6 +84,7 @@ if [ -x /usr/bin/dircolors ]; then
     alias grep='grep --color=auto'
     alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
+    alias watch='watch --color'
 fi
 
 # colored GCC warnings and errors
@@ -113,11 +114,18 @@ if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
-export PATH=$PATH:/usr/local/go/bin
-export PATH=$PATH:/opt/nvim-linux64/bin
-export PATH=$PATH:~/scripts
-export PATH=$PATH:~/.cargo/bin
-export PATH=$PATH:~/go/bin
+addToPath ()
+{
+    if [[ ":$PATH:" != *":$1:"* ]]; then
+	export PATH="$PATH:$1"
+    fi
+}
+
+addToPath '/usr/local/go/bin'
+addToPath '/opt/nvim-linux64/bin'
+addToPath '~/scripts'
+addToPath '~/.cargo/bin'
+addToPath '~/go/bin'
 
 export EDITOR='/opt/nvim-linux64/bin/nvim'
 
