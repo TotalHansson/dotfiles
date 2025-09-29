@@ -202,7 +202,8 @@ require('lazy').setup({
     opts = {
       options = {
         icons_enabled = true,
-        theme = 'onedark',
+        -- theme is set manually to a modified onedark below
+        -- theme = 'onedark',
         component_separators = { left = '', right = '' },
         section_separators = { left = '', right = '' },
         disabled_filetypes = {
@@ -752,6 +753,17 @@ require('onedark').setup {
   style = 'dark',
 }
 require('onedark').load()
+
+-- Swap colors of normal and command mode
+local custom_onedark = require('lualine.themes.onedark')
+custom_onedark.command.a.bg = custom_onedark.normal.a.bg
+custom_onedark.normal.a.bg = '#f2b23a'
+require('lualine').setup {
+  options = {
+    theme = custom_onedark,
+  },
+}
+
 vim.api.nvim_set_hl(0, 'Folded', { fg = 'Gray' })
 
 require('peek').setup({

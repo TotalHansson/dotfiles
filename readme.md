@@ -83,6 +83,7 @@ In no particular order:
 * alacritty
 * i3
 * i3status
+* Polybar
 * nvim
 * picom
 * feh
