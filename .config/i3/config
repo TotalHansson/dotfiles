@@ -191,7 +191,7 @@ bindsym $mod+Shift+0 move container to workspace number $ws10
 # reload the configuration file
 bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod+Shift+r restart
+bindsym $mod+Shift+r exec "i3-msg restart && pkill polybar && ~/scripts/launch-polybar.sh"
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
@@ -222,14 +222,13 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-# Start i3bar to display a workspace bar (plus the system information i3status
-# finds out, if available)
-bar {
-        status_command i3status
-}
+# Launch polybar
+exec --no-startup-id ~/scripts/launch-polybar.sh
 
 # picom window compositor. Handles window decorations and rendering related tasks such as fading inactive windows and vsync
 exec --no-startup-id picom --daemon
+# set primary monitor
+exec --no-startup-id xrandr --output $(xrandr --listmonitors | grep -q DP-3-8 && echo DP-3-8 || echo eDP-1) --primary
 
 # Styling?
 # gaps inner 20px
