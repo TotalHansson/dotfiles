@@ -18,8 +18,10 @@ alias eci='nvim ~/.config/i3/config'
 alias ecn='nvim ~/.config/nvim/init.lua'
 # [e]dit [c]onfig [a]lacritty
 alias eca='nvim ~/.config/alacritty/alacritty.toml'
-# [e[]dit [c]onfig [s]sh
+# [e]dit [c]onfig [s]sh
 alias ecs='nvim ~/.ssh/config'
+# [e]dit [c]onfig [g]it
+alias ecg='nvim ~/.gitconfig'
 
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 complete -o bashdefault -o default -o nospace -F __git_wrap__git_main config
