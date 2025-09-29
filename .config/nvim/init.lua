@@ -307,6 +307,15 @@ require('lazy').setup({
     },
     config = function()
       require('neo-tree').setup {
+        window = {
+          mappings = {
+            ['<space>'] = {
+              'toggle_node',
+              nowait = true,
+            },
+            ['<C-b>'] = 'close_window',
+          },
+        },
         filesystem = {
           filtered_items = {
             visible = true, -- Show hidden files
@@ -398,7 +407,7 @@ vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = tr
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
 -- Toggle file tree sidebar
-vim.keymap.set('n', '<C-b>', '<Cmd>Neotree reveal toggle<CR>')
+vim.keymap.set('n', '<C-b>', '<Cmd>Neotree toggle filesystem left reveal<CR>')
 
 -- Paste over selected, without yanking
 vim.keymap.set({ 'v', 'x' }, '<leader>p', [["_dP]])
