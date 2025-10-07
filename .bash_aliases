@@ -12,6 +12,9 @@ alias ....='cd ../../..'
 alias suspend='systemctl suspend'
 alias dirsize='du --human-readable --all --max-depth=1 | sort --human-numeric-sort'
 
+alias vi='nvim'
+alias vim='nvim'
+
 # [e]dit [c]onfig [b]ash_[a]liases
 alias ecba='nvim ~/.bash_aliases'
 # [e]dit [c]onfig [b]ashrc
@@ -26,6 +29,10 @@ alias eca='nvim ~/.config/alacritty/alacritty.toml'
 alias ecs='nvim ~/.ssh/config'
 # [e]dit [c]onfig [g]it
 alias ecg='nvim ~/.gitconfig'
+# [e]dit [c]onfig [p]icom
+alias ecp='nvim ~/.config/picom/picom.conf'
+# [e]dit [c]onfig [p]oly[b]ar
+alias ecpb='nvim ~/.config/polybar/config.ini'
 
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 complete -o bashdefault -o default -o nospace -F __git_wrap__git_main config
@@ -39,8 +46,6 @@ alias getnamespace=currentnamespace
 
 alias ta='tmux attach'
 
-alias vi='nvim'
-alias vim='nvim'
 
 function md() {
 	mkdir --parent $1
