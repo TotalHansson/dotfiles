@@ -1,3 +1,7 @@
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
+alias watch='watch --color'
+
 alias la='ls -Aohp --group-directories-first'
 alias ll='ls -A --group-directories-first'
 alias l='ls -CF'
@@ -10,7 +14,7 @@ alias dirsize='du --human-readable --all --max-depth=1 | sort --human-numeric-so
 
 # [e]dit [c]onfig [b]ash_[a]liases
 alias ecba='nvim ~/.bash_aliases'
-# [e]dit [c]onfig [b]ash
+# [e]dit [c]onfig [b]ashrc
 alias ecb='nvim ~/.bashrc'
 # [e]dit [c]onfig [i]3
 alias eci='nvim ~/.config/i3/config'
