@@ -52,15 +52,14 @@ addToPath ()
 }
 
 addToPath '/usr/local/go/bin'
-addToPath '/opt/nvim-linux64/bin'
+addToPath '/opt/nvim-linux-x86_64/bin/'
 addToPath '~/scripts'
 addToPath '~/.cargo/bin'
 addToPath '~/go/bin'
 
 export EDITOR='/opt/nvim-linux64/bin/nvim'
 
-
-. "$HOME/.cargo/env"
-
 source ~/programming/repos/alacritty/extra/completions/alacritty.bash
 source /usr/share/bash-completion/completions/git
+source ${HOME}/.cargo/env
+source ${HOME}/.deno/env
