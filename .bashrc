@@ -53,15 +53,17 @@ addToPath ()
     fi
 }
 
-addToPath '/usr/local/go/bin'
-addToPath '/opt/nvim-linux-x86_64/bin/'
-addToPath '~/scripts'
-addToPath '~/.cargo/bin'
-addToPath '~/go/bin'
+addToPath /usr/local/go/bin
+addToPath /opt/nvim-linux-x86_64/bin/
+addToPath ~/scripts
+addToPath ~/.cargo/bin
+addToPath ~/go/bin
+# addToPath ~/.local/share/pypoetry/venv/bin/
+addToPath ~/.local/TokenUpdater
 
 export EDITOR='/opt/nvim-linux64/bin/nvim'
 
-source ~/programming/repos/alacritty/extra/completions/alacritty.bash
 source /usr/share/bash-completion/completions/git
-source ${HOME}/.cargo/env
-source ${HOME}/.deno/env
+source ~/programming/repos/alacritty/extra/completions/alacritty.bash
+source ~/.cargo/env
+source ~/.deno/env
