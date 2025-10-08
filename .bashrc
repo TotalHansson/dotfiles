@@ -61,7 +61,7 @@ addToPath ~/go/bin
 # addToPath ~/.local/share/pypoetry/venv/bin/
 addToPath ~/.local/TokenUpdater
 
-export EDITOR='/opt/nvim-linux64/bin/nvim'
+export EDITOR='/opt/nvim-linux-x86_64/bin/nvim'
 
 source /usr/share/bash-completion/completions/git
 source ~/programming/repos/alacritty/extra/completions/alacritty.bash
