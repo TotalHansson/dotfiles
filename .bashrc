@@ -60,7 +60,7 @@ sourceIfExists() {
 }
 
 addToPath /usr/local/go/bin
-addToPath /opt/nvim-linux-x86_64/bin/
+addToPath /opt/nvim-linux-x86_64/bin
 addToPath ~/scripts
 addToPath ~/.cargo/bin
 addToPath ~/go/bin
