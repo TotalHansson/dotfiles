@@ -46,10 +46,16 @@ if [ -f ~/.bash_aliases ]; then
     source ~/.bash_aliases
 fi
 
-addToPath ()
-{
+addToPath () {
     if [[ ":$PATH:" != *":$1:"* ]]; then
 	export PATH="$PATH:$1"
+    fi
+}
+
+sourceIfExists() {
+    local file="$1"
+    if [ -f "$file" ]; then
+        source "$file"
     fi
 }
 
@@ -63,7 +69,7 @@ addToPath ~/.local/TokenUpdater
 
 export EDITOR='/opt/nvim-linux-x86_64/bin/nvim'
 
-source /usr/share/bash-completion/completions/git
-source ~/programming/repos/alacritty/extra/completions/alacritty.bash
-source ~/.cargo/env
-source ~/.deno/env
+sourceIfExists /usr/share/bash-completion/completions/git
+sourceIfExists ~/programming/repos/alacritty/extra/completions/alacritty.bash
+sourceIfExists ~/.cargo/env
+sourceIfExists ~/.deno/env
