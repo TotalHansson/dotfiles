@@ -307,6 +307,18 @@ require("lazy").setup({
 						num_pickers = 5,
 						ignore_empty_prompt = true,
 					},
+					layout_strategy = "vertical",
+					layout_config = {
+						horizontal = {
+							width = 0.95,
+						},
+					},
+					path_display = function(_, path)
+						-- remove leading "packages/" from filepaths
+						path = path:gsub("packages/", "")
+						-- add two spaces between filepath and text
+						return path .. "  "
+					end,
 				},
 				-- pickers = {}
 				extensions = {
@@ -342,24 +354,22 @@ require("lazy").setup({
 			map("<leader><leader>", builtin.buffers, "[ ] Find existing buffers")
 
 			-- Disable fire preview and use dropdown style for find_files
-			local find_files_no_preview = function()
+			map("<leader>sf", function()
 				builtin.find_files(themes.get_dropdown({
 					previewer = false,
 				}))
-			end
-			map("<leader>sf", find_files_no_preview, "[S]earch [F]iles")
-			map("<C-p>", find_files_no_preview, "[S]earch [F]iles")
+			end, "[S]earch [F]iles")
 
-			-- Disable coordinates for grep_string
+			-- Settings for live and word grep
+			local grep_opts = {
+				disable_coordinates = true,
+				glob_pattern = "!*.txt",
+			}
 			map("<leader>sw", function()
-				builtin.grep_string({ disable_coordinates = true })
+				builtin.grep_string(grep_opts)
 			end, "[S]earch current [W]ord")
-
-			-- Disable coordinates for live_grep
 			map("<leader>sg", function()
-				builtin.live_grep({
-					disable_coordinates = true,
-				})
+				builtin.live_grep(grep_opts)
 			end, "[S]earch by [G]rep")
 
 			-- Shortcut for searching your Neovim configuration files
