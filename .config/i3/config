@@ -256,7 +256,7 @@ client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
 client.background       #ffffff
 
 # Background image provider
-exec --no-startup-id ~/.fehbg
+exec-always --no-startup-id ${HOME}/.fehbg
 
 # Authentication client to let unpriveleged processes talk to priveleged ones
 exec --no-startup-id /usr/bin/lxpolkit
