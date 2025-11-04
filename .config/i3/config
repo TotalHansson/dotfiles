@@ -19,6 +19,9 @@ font pango:monospace 8
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
 #font pango:DejaVu Sans Mono 8
 
+# Turn on num lock
+exec --no-startup-id numlockx
+
 # Start XDG autostart .desktop files using dex. See also
 # https://wiki.archlinux.org/index.php/XDG_Autostart
 exec --no-startup-id dex --autostart --environment i3
@@ -234,11 +237,9 @@ exec --no-startup-id xrandr --output $(xrandr --listmonitors | grep -q DP-3-8 &&
 
 # Styling?
 gaps inner 10px
-# gaps outer 5px
 smart_gaps on
 default_border pixel 2
 hide_edge_borders smart
-
 
 # class                 border  backgr. text    indicator child_border
 client.focused          #4c7899 #285577 #ffffff #c2a42d   #bf7104
