@@ -1,6 +1,7 @@
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 alias watch='watch --color'
+alias tldr='tldr --theme base16'
 
 alias la='ls -Aohp --group-directories-first'
 alias ll='ls -A --group-directories-first'
