@@ -1,0 +1,13 @@
+[
+	{
+		"caption": "Push: Gerrit master",
+		"command": "git",
+		"args": {
+			"argv": [
+				"push",
+				"origin",
+				"HEAD:refs/for/master"
+			]
+		}
+	}
+]

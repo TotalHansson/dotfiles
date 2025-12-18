@@ -1,0 +1,13 @@
+{
+	"added_words":
+	[
+		"goroutine",
+		"goroutines",
+	],
+	"ignore_diff_white_space": false,
+	"editor_argument_format": "-e /opt/nvim-linux-x86_64/bin/nvim +${line} ${file}",
+	"editor_path": "/usr/local/bin/alacritty",
+	"time_format": "24h",
+	"expand_merge_commits_by_default": false,
+	"commit_graph_ordering": "commit_date",
+}
