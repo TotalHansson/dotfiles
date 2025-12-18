@@ -1,0 +1,3 @@
+[alias]
+	lo = log --graph --branches --oneline --no-merges --ancestry-path master~20..master
+	alias = !echo 'git config --get-regexp ^alias\\.' && git config --get-regexp ^alias\\.
