@@ -87,4 +87,21 @@ In no particular order:
 * picom
 * feh
 * numlockx
+* pavucontrol
+* arandr
+* xinput
+* xev
+* blueman-manager
+* import
+* xprop
+* dunst
+* sublime-merge
+* git
+* ssh
+* tldr
+* curl
+* docker
+* make
+* ripgrep
+* tree
 
