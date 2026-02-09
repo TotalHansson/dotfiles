@@ -64,12 +64,16 @@ addToPath /opt/nvim-linux-x86_64/bin
 addToPath ~/scripts
 addToPath ~/.cargo/bin
 addToPath ~/go/bin
-# addToPath ~/.local/share/pypoetry/venv/bin/
-addToPath ~/.local/TokenUpdater
+addToPath ~/repos/alacritty/target/release
+addToPath ~/.local/bin
 
 export EDITOR='/opt/nvim-linux-x86_64/bin/nvim'
 
 sourceIfExists /usr/share/bash-completion/completions/git
-sourceIfExists ~/programming/repos/alacritty/extra/completions/alacritty.bash
+sourceIfExists ~/repos/alacritty/extra/completions/alacritty.bash
 sourceIfExists ~/.cargo/env
 sourceIfExists ~/.deno/env
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

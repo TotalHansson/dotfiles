@@ -403,6 +403,9 @@ require("lazy").setup({
 			"mason-org/mason-lspconfig.nvim",
 			"WhoIsSethDaniel/mason-tool-installer.nvim",
 
+			-- JSON/YAML schemas (incl Kubernetes)
+			"b0o/schemastore.nvim",
+
 			-- Useful status updates for LSP.
 			{ "j-hui/fidget.nvim", opts = {} },
 
@@ -557,7 +560,6 @@ require("lazy").setup({
 			-- Diagnostic Config
 			-- See :help vim.diagnostic.Opts
 			vim.diagnostic.config({
-
 				severity_sort = true,
 				float = { border = "rounded", source = "if_many" },
 				underline = { severity = vim.diagnostic.severity.ERROR },
@@ -604,6 +606,45 @@ require("lazy").setup({
 				gopls = {
 					gofumpt = true,
 					usePlaceholders = true,
+				},
+				helm_ls = {
+					filetypes = { "helm" },
+					settings = {
+						["helm-ls"] = {
+							yamlls = {
+								path = "yaml-language-server", -- optional if on PATH
+							},
+						},
+					},
+				},
+				yamlls = {
+					-- 	keyOrdering = false, -- Less intrusive for manifests
+					-- 	format = { enable = true },
+					-- 	validate = true,
+					-- 	schemaStore = { enable = false }, -- We’ll pass schemas manually
+					-- 	schemas = {
+					-- 		-- Use SchemaStore (provides "Kubernetes" and many CRDs if present)
+					-- 		require("schemastore").yaml.schemas(),
+					-- 		-- Force Kubernetes schema for common manifest filenames
+					-- 		["https://json.schemastore.org/kubernetes"] = {
+					-- 			"/*.k8s.yaml",
+					-- 			"/*.k8s.yml",
+					-- 			"**/k8s/*.yaml",
+					-- 			"**/k8s/*.yml",
+					-- 			"**/manifests/**/*.yaml",
+					-- 			"**/manifests/**/*.yml",
+					-- 			"deployment.yaml",
+					-- 			"service.yaml",
+					-- 			"ingress.yaml",
+					-- 			"kustomization.yaml", -- not strictly Kubernetes schema, but useful
+					-- 		},
+					-- 	},
+
+					-- yaml = {
+					-- 	schemas = {
+					-- 		["https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.32.1-standalone-strict/all.json"] = "/*.k8s.yaml",
+					-- 	},
+					-- },
 				},
 				-- pyright = {},
 				-- rust_analyzer = {},
@@ -670,6 +711,16 @@ require("lazy").setup({
 		end,
 	},
 
+	{
+		"qvalentin/helm-ls.nvim",
+		ft = "helm",
+		opts = {
+			conceal_templates = { enabled = false },
+			indent_hints = { enabled = true },
+			action_highlight = { enabled = true },
+		},
+	},
+
 	{ -- Linting
 		"mfussenegger/nvim-lint",
 		event = { "BufReadPost", "BufNewFile" },
@@ -678,10 +729,6 @@ require("lazy").setup({
 			lint.linters_by_ft = {
 				go = { "golangcilint" },
 			}
-
-			-- Use local V2 config file
-			local go = require("lint").linters.golangcilint
-			table.insert(go.args, 2, "--config=.golangci_v2.yml")
 
 			-- Create autocommand which carries out the actual linting
 			-- on the specified events.
@@ -693,6 +740,14 @@ require("lazy").setup({
 					-- avoid superfluous noise, notably within the handy LSP pop-ups that
 					-- describe the hovered symbol using Markdown.
 					if vim.bo.modifiable then
+						-- Find nearest go.mod upward from the file being linted
+						if vim.bo.filetype == "go" then
+							local go_mod = vim.fs.find("go.mod", { upward = true, path = vim.fn.expand("%:p:h") })[1]
+							if go_mod then
+								lint.linters.golangcilint.cwd = vim.fs.dirname(go_mod)
+							end
+						end
+
 						lint.try_lint()
 					end
 				end,
@@ -764,44 +819,24 @@ require("lazy").setup({
 					-- `friendly-snippets` contains a variety of premade snippets.
 					--    See the README about individual language/framework/plugin snippets:
 					--    https://github.com/rafamadriz/friendly-snippets
-					-- {
-					--   'rafamadriz/friendly-snippets',
-					--   config = function()
-					--     require('luasnip.loaders.from_vscode').lazy_load()
-					--   end,
-					-- },
+					{ "rafamadriz/friendly-snippets" },
 				},
 				-- opts = {},
 				config = function()
 					-- See `:help luasnip` for more information about Luasnip configuration
-					local luasnip = require("luasnip")
-					local s = luasnip.snippet
-					local t = luasnip.text_node
-					local i = luasnip.insert_node
-					-- Custom snippets
-					luasnip.add_snippets("go", {
-						s("iferr", {
-							t({ "if err != nil {", "\t" }),
-							i(1, ""),
-							t({ "", "}", "" }),
-						}),
-
-						s("print", {
-							t('fmt.Printf("'),
-							i(1, ""),
-							t('\\n"'),
-							i(2, ""),
-							t(")"),
-						}),
-
-						s("stderr", {
-							t('fmt.Fprintf(os.Stderr, "@@ '),
-							i(1, ""),
-							t('\\n"'),
-							i(2, ""),
-							t(")"),
-						}),
+					require("luasnip.loaders.from_vscode").lazy_load()
+					require("luasnip.loaders.from_lua").lazy_load({
+						paths = vim.fn.stdpath("config") .. "/lua/snippets",
 					})
+
+					-- Custom keybinds
+					local luasnip = require("luasnip")
+					vim.keymap.set({ "i", "s" }, "<C-L>", function()
+						luasnip.jump(1)
+					end, { silent = true })
+					vim.keymap.set({ "i", "s" }, "<C-H>", function()
+						luasnip.jump(-1)
+					end, { silent = true })
 				end,
 			},
 			"folke/lazydev.nvim",
@@ -810,19 +845,6 @@ require("lazy").setup({
 		--- @type blink.cmp.Config
 		opts = {
 			keymap = {
-				-- 'default' (recommended) for mappings similar to built-in completions
-				--   <c-y> to accept ([y]es) the completion.
-				--    This will auto-import if your LSP supports it.
-				--    This will expand snippets if the LSP sent a snippet.
-				-- 'super-tab' for tab to accept
-				-- 'enter' for enter to accept
-				-- 'none' for no mappings
-				--
-				-- For an understanding of why the 'default' preset is recommended,
-				-- you will need to read `:help ins-completion`
-				--
-				-- No, but seriously. Please read `:help ins-completion`, it is really good!
-				--
 				-- All presets have the following mappings:
 				-- <tab>/<s-tab>: move to right/left of your snippet expansion
 				-- <c-space>: Open menu or open docs if already open
@@ -878,7 +900,7 @@ require("lazy").setup({
 		config = function()
 			-- Load the colorscheme here.
 			require("onedark").setup({
-				style = "dark",
+				style = "darker",
 			})
 			vim.cmd.colorscheme("onedark")
 		end,
@@ -939,7 +961,7 @@ require("lazy").setup({
 	},
 
 	{ -- Collection of various small independent plugins/modules
-		"echasnovski/mini.nvim",
+		"nvim-mini/mini.nvim",
 		config = function()
 			-- Better Around/Inside textobjects
 			--
@@ -964,15 +986,64 @@ require("lazy").setup({
 
 	{ -- Highlight, edit, and navigate code
 		"nvim-treesitter/nvim-treesitter",
+		lazy = false,
+		branch = "main",
 		build = ":TSUpdate",
-		main = "nvim-treesitter.configs", -- Sets main module to use for opts
-		-- [[ Configure Treesitter ]] See `:help nvim-treesitter`
-		opts = {
-			ensure_installed = {
+
+		-- [[ Configure Treesitter ]] See `:help nvim-treesitter-intro`
+		config = function()
+			---@param buf integer
+			---@param language string
+			local function treesitter_try_attach(buf, language)
+				-- check if parser exists and load it
+				if not vim.treesitter.language.add(language) then
+					return
+				end
+				-- enables syntax highlighting and other treesitter features
+				vim.treesitter.start(buf, language)
+
+				-- enables treesitter based folds
+				-- for more info on folds see `:help folds`
+				-- vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+
+				-- enables treesitter based indentation
+				vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+			end
+
+			local available_parsers = require("nvim-treesitter").get_available()
+			vim.api.nvim_create_autocmd("FileType", {
+				callback = function(args)
+					local buf, filetype = args.buf, args.match
+					local language = vim.treesitter.language.get_lang(filetype)
+					if not language then
+						return
+					end
+
+					local installed_parsers = require("nvim-treesitter").get_installed("parsers")
+
+					if vim.tbl_contains(installed_parsers, language) then
+						-- enable the parser if it is installed
+						treesitter_try_attach(buf, language)
+					elseif vim.tbl_contains(available_parsers, language) then
+						-- if a parser is available in `nvim-treesitter` enable it after ensuring it is installed
+						require("nvim-treesitter").install(language):await(function()
+							treesitter_try_attach(buf, language)
+						end)
+					else
+						-- try to enable treesitter features in case the parser exists but is not available from `nvim-treesitter`
+						treesitter_try_attach(buf, language)
+					end
+				end,
+			})
+
+			-- ensure basic parser are installed
+			local parsers = {
 				"bash",
 				"c",
 				"diff",
 				"go",
+				"gotmpl",
+				"helm",
 				"html",
 				"lua",
 				"luadoc",
@@ -981,18 +1052,10 @@ require("lazy").setup({
 				"query",
 				"vim",
 				"vimdoc",
-			},
-			-- Autoinstall languages that are not installed
-			auto_install = true,
-			highlight = {
-				enable = true,
-				-- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
-				--  If you are experiencing weird indenting issues, add the language to
-				--  the list of additional_vim_regex_highlighting and disabled languages for indent.
-				additional_vim_regex_highlighting = { "ruby" },
-			},
-			indent = { enable = true, disable = { "ruby" } },
-		},
+				"yaml",
+			}
+			require("nvim-treesitter").install(parsers)
+		end,
 		dependencies = {
 			-- Keep current context as the top lines of the editor
 			"nvim-treesitter/nvim-treesitter-context",
@@ -1004,43 +1067,6 @@ require("lazy").setup({
 		opts = {
 			mapping = "<C-t>",
 		},
-	},
-
-	{ -- Markdown preview
-		"toppair/peek.nvim",
-		event = { "VeryLazy" },
-		build = "deno task --quiet build:fast",
-		config = function()
-			require("peek").setup({
-				auto_load = true, -- whether to automatically load preview when
-				-- entering another markdown buffer
-				close_on_bdelete = true, -- close preview window on buffer delete
-				syntax = true, -- enable syntax highlighting, affects performance
-				theme = "dark", -- 'dark' or 'light'
-				update_on_change = true,
-				throttle_at = 200000, -- start throttling when file exceeds this
-				throttle_time = "auto", -- minimum amount of time in milliseconds
-				-- that has to pass before starting new render
-				app = "webview", -- 'webview', 'browser', string or a table of strings
-				filetype = { "markdown" }, -- list of filetypes to recognize as markdown
-				-- amount of bytes in size
-			})
-			-- vim.api.nvim_create_user_command('PeekOpen', require('peek').open, {})
-			-- vim.api.nvim_create_user_command('PeekClose', require('peek').close, {})
-			local peek = require("peek")
-			vim.api.nvim_create_user_command("MarkdownPreviewOpen", function()
-				if not peek.is_open() and vim.bo[vim.api.nvim_get_current_buf()].filetype == "markdown" then
-					vim.fn.system("i3-msg split horizontal")
-					peek.open()
-				end
-			end, {})
-			vim.api.nvim_create_user_command("MarkdownPreviewClose", function()
-				if peek.is_open() then
-					peek.close()
-					vim.fn.system("i3-msg move left")
-				end
-			end, {})
-		end,
 	},
 
 	{ -- File explorer
