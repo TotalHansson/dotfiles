@@ -19,8 +19,6 @@ alias vim='nvim'
 alias ecba='nvim ~/.bash_aliases'
 # [e]dit [c]onfig [b]ashrc
 alias ecb='nvim ~/.bashrc'
-# [e]dit [c]onfig [i]3
-alias eci='nvim ~/.config/i3/config'
 # [e]dit [c]onfig [n]vim
 alias ecn='nvim ~/.config/nvim/init.lua'
 # [e]dit [c]onfig [a]lacritty
@@ -29,11 +27,19 @@ alias eca='nvim ~/.config/alacritty/alacritty.toml'
 alias ecs='nvim ~/.ssh/config'
 # [e]dit [c]onfig [g]it
 alias ecg='nvim ~/.gitconfig'
-# [e]dit [c]onfig [p]icom
-alias ecp='nvim ~/.config/picom/picom.conf'
-# [e]dit [c]onfig [p]oly[b]ar
-alias ecpb='nvim ~/.config/polybar/config.ini'
 
+# [e]dir [c]onfig [h]yprland
+alias ech='nvim ~/.config/hypr/'
+# [e]dir [c]onfig [w]aybar
+alias ecw='nvim ~/.config/waybar/'
+
+# [e]dit [c]onfig [i]3
+# alias eci='nvim ~/.config/i3/config'
+# [e]dit [c]onfig [p]icom
+# alias ecp='nvim ~/.config/picom/picom.conf'
+# [e]dit [c]onfig [p]oly[b]ar
+# alias ecpb='nvim ~/.config/polybar/config.ini'
+#
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 complete -o bashdefault -o default -o nospace -F __git_wrap__git_main config
 _completion_loader git
