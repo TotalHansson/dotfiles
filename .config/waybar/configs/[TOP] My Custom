@@ -29,8 +29,7 @@
 	],
 
 "modules-center": [
-	"group/app_drawer",
-	"group/notify",
+	"custom/swaync",
 	"clock",
 	"idle_inhibitor",	
 	"custom/hint",	

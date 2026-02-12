@@ -72,6 +72,9 @@ vim.o.foldmethod = "indent"
 -- Start with all folds open
 vim.o.foldlevelstart = 99
 
+-- Border around popup windows
+vim.o.winborder = "single"
+
 -- Sync clipboard between OS and Neovim.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
 --  Remove this option if you want your OS clipboard to remain independent.

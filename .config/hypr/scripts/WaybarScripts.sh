@@ -37,7 +37,7 @@ if [[ "$1" == "--btop" ]]; then
 elif [[ "$1" == "--nvtop" ]]; then
     $term --title nvtop sh -c 'nvtop'
 elif [[ "$1" == "--nmtui" ]]; then
-    $term nmtui
+    $term --command nmtui
 elif [[ "$1" == "--term" ]]; then
     $term &
 elif [[ "$1" == "--files" ]]; then

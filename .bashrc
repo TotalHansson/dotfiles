@@ -67,7 +67,7 @@ addToPath ~/go/bin
 addToPath ~/repos/alacritty/target/release
 addToPath ~/.local/bin
 
-export EDITOR='/opt/nvim-linux-x86_64/bin/nvim'
+export EDITOR='/usr/bin/nvim'
 
 sourceIfExists /usr/share/bash-completion/completions/git
 sourceIfExists ~/repos/alacritty/extra/completions/alacritty.bash
