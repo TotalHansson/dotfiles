@@ -869,9 +869,9 @@ require("lazy").setup({
 			},
 
 			completion = {
-				-- By default, you may press `<c-space>` to show the documentation.
-				-- Optionally, set `auto_show = true` to show the documentation after a delay.
 				documentation = { auto_show = true, auto_show_delay_ms = 0 },
+				list = { selection = { preselect = false, auto_insert = false } },
+				ghost_text = { enabled = true },
 			},
 
 			sources = {
@@ -1007,7 +1007,7 @@ require("lazy").setup({
 
 				-- enables treesitter based folds
 				-- for more info on folds see `:help folds`
-				-- vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+				vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 
 				-- enables treesitter based indentation
 				vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
