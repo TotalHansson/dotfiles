@@ -61,9 +61,9 @@ function getpass() {
 	kubectl get secrets <NAME> --output jsonpath='{.data.password}' | base64 --decode
 }
 
-function kubectltop() {
-	kubectl top pod $@ --containers --no-headers | sort --reverse --key 4 --numeric
-}
+# function kubectltop() {
+# 	kubectl top pod $@ --containers --no-headers | sort --reverse --key 4 --numeric
+# }
 
 function clusternodes() {
 	watch "kubectl get pods -o custom-columns=:.metadata.name --no-headers --selector 'app.kubernetes.io/name=my-cluster' | parallel -k 'echo {}; kubectl exec {} -c redis-node -- cli cluster nodes | sort; echo ""'"
