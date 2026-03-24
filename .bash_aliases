@@ -16,22 +16,21 @@ alias vi='nvim'
 alias vim='nvim'
 
 # [e]dit [c]onfig [b]ash_[a]liases
-alias ecba='nvim ~/.bash_aliases'
+alias ecba='nvim --cmd "cd ~" ~/.bash_aliases'
 # [e]dit [c]onfig [b]ashrc
-alias ecb='nvim ~/.bashrc'
+alias ecb='nvim --cmd "cd ~" ~/.bashrc'
 # [e]dit [c]onfig [n]vim
-alias ecn='nvim ~/.config/nvim/init.lua'
+alias ecn='nvim --cmd "cd ~/.config/nvim" ~/.config/nvim/init.lua'
 # [e]dit [c]onfig [a]lacritty
-alias eca='nvim ~/.config/alacritty/alacritty.toml'
+alias eca='nvim --cmd "cd ~/.config/alacritty" ~/.config/alacritty/alacritty.toml'
 # [e]dit [c]onfig [s]sh
-alias ecs='nvim ~/.ssh/config'
+alias ecs='nvim --cmd "cd ~/.ssh" ~/.ssh/config'
 # [e]dit [c]onfig [g]it
-alias ecg='nvim ~/.gitconfig'
-
-# [e]dir [c]onfig [h]yprland
-alias ech='nvim ~/.config/hypr/'
-# [e]dir [c]onfig [w]aybar
-alias ecw='nvim ~/.config/waybar/'
+alias ecg='nvim --cmd "cd ~" ~/.gitconfig'
+# [e]dit [c]onfig [h]yprland
+alias ech='nvim --cmd "cd ~/.config/hypr" ~/.config/hypr/'
+# [e]dit [c]onfig [w]aybar
+alias ecw='nvim --cmd "cd ~/.config/waybar" ~/.config/waybar/'
 
 # [e]dit [c]onfig [i]3
 # alias eci='nvim ~/.config/i3/config'
