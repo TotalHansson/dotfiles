@@ -203,6 +203,13 @@ require("lazy").setup({
 		},
 	},
 
+	{
+		"https://plugins.ejri.dev/baredot.nvim",
+		opts = {
+			git_dir = "~/.cfg",
+		},
+	},
+
 	{ -- Useful plugin to show you pending keybinds.
 		"folke/which-key.nvim",
 		event = "VimEnter", -- Sets the loading event to 'VimEnter'
