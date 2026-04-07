@@ -1113,6 +1113,14 @@ require("lazy").setup({
 						visible = true, -- Show hidden files
 					},
 				},
+				close_if_last_window = true,
+				default_component_configs = {
+					git_status = {
+						symbols = {
+							unstaged = "",
+						},
+					},
+				},
 			})
 
 			vim.keymap.set("n", "<C-b>", "<Cmd>Neotree toggle filesystem left reveal<CR>")
