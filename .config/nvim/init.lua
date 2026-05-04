@@ -847,10 +847,14 @@ require("lazy").setup({
 					-- Custom keybinds
 					local luasnip = require("luasnip")
 					vim.keymap.set({ "i", "s" }, "<C-L>", function()
-						luasnip.jump(1)
+						if luasnip.locally_jumpable(1) then
+							luasnip.jump(1)
+						end
 					end, { silent = true })
 					vim.keymap.set({ "i", "s" }, "<C-H>", function()
-						luasnip.jump(-1)
+						if luasnip.locally_jumpable(-1) then
+							luasnip.jump(-1)
+						end
 					end, { silent = true })
 				end,
 			},
@@ -869,6 +873,9 @@ require("lazy").setup({
 				--
 				-- See :h blink-cmp-config-keymap for defining your own keymap
 				preset = "default",
+
+				-- Disable Tab since snippet jumping is set to <C-H>/<C-L>
+				["<Tab>"] = false,
 
 				-- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
 				--    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
