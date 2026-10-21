@@ -1,8 +1,13 @@
 {
-	"added_words":
-	[
+	"added_words": [
 		"goroutine",
 		"goroutines",
+		"statefulset",
+		"statefulsets",
+		"kubectl",
+		"controlhub",
+		"e2e",
+		"commandcenter",
 	],
 	"ignore_diff_white_space": false,
 	"editor_argument_format": "--command /usr/bin/nvim +${line} ${file}",
@@ -10,4 +15,5 @@
 	"time_format": "24h",
 	"expand_merge_commits_by_default": false,
 	"commit_graph_ordering": "commit_date",
+	"font_size": 11,
 }

@@ -165,9 +165,12 @@ require("lazy").setup({
 	--   { 'link', opts = {} } for staic configuration
 	--   { 'link', config = function() ... end } for dynamic LUA configuration
 
-	"NMAC427/guess-indent.nvim", -- Detect tabstop and shiftwidth automatically
-
 	"tpope/vim-fugitive", -- Enables `:Git` commands
+
+	{
+		"NMAC427/guess-indent.nvim", -- Detect tabstop and shiftwidth automatically
+		opts = {},
+	},
 
 	{ -- Adds git related signs to the gutter, as well as utilities for managing changes
 		"lewis6991/gitsigns.nvim",
@@ -367,6 +370,7 @@ require("lazy").setup({
 			map("<leader>sf", function()
 				builtin.find_files(themes.get_dropdown({
 					previewer = false,
+					search_dirs = { ".", ".github/" },
 				}))
 			end, "[S]earch [F]iles")
 
@@ -374,6 +378,7 @@ require("lazy").setup({
 			local grep_opts = {
 				disable_coordinates = true,
 				glob_pattern = "!*.txt",
+				search_dirs = { ".", ".github/" },
 			}
 			map("<leader>sw", function()
 				builtin.grep_string(grep_opts)
@@ -741,8 +746,16 @@ require("lazy").setup({
 		event = { "BufReadPost", "BufNewFile" },
 		config = function()
 			local lint = require("lint")
+			local golangcilint = lint.linters.golangcilint
+			golangcilint.args[#golangcilint.args] = function()
+				local path = vim.api.nvim_buf_get_name(0)
+				local directory = vim.fn.fnamemodify(path, ":p:h")
+				local go_mod = vim.fs.find("go.mod", { upward = true, path = directory })[1]
+				return go_mod and directory or path
+			end
 			lint.linters_by_ft = {
 				go = { "golangcilint" },
+				markdown = { "editorconfig-checker" },
 			}
 
 			-- Create autocommand which carries out the actual linting
@@ -755,15 +768,21 @@ require("lazy").setup({
 					-- avoid superfluous noise, notably within the handy LSP pop-ups that
 					-- describe the hovered symbol using Markdown.
 					if vim.bo.modifiable then
+						local lint_opts = {}
 						-- Find nearest go.mod upward from the file being linted
 						if vim.bo.filetype == "go" then
 							local go_mod = vim.fs.find("go.mod", { upward = true, path = vim.fn.expand("%:p:h") })[1]
 							if go_mod then
-								lint.linters.golangcilint.cwd = vim.fs.dirname(go_mod)
+								lint_opts.cwd = vim.fs.dirname(go_mod)
 							end
 						end
 
-						lint.try_lint()
+						local path = vim.api.nvim_buf_get_name(0)
+						if path:match("/%.github/workflows/[^/]+%.ya?ml$") then
+    						lint.try_lint("actionlint")
+						end
+
+						lint.try_lint(nil, lint_opts)
 					end
 				end,
 			})

@@ -1,6 +1,7 @@
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 alias watch='watch --color'
+alias df='df --human-readable'
 
 alias la='ls -Aohp --group-directories-first'
 alias ll='ls -A --group-directories-first'
@@ -31,6 +32,8 @@ alias ecg='nvim --cmd "cd ~" ~/.gitconfig'
 alias ech='nvim --cmd "cd ~/.config/hypr" ~/.config/hypr/'
 # [e]dit [c]onfig [w]aybar
 alias ecw='nvim --cmd "cd ~/.config/waybar" ~/.config/waybar/'
+# [e]dit [c]onfig [k]ubernetes
+alias eck='nvim --cmd "cd ~/.kube" ~/.kube/config'
 
 # [e]dit [c]onfig [i]3
 # alias eci='nvim ~/.config/i3/config'
@@ -42,12 +45,6 @@ alias ecw='nvim --cmd "cd ~/.config/waybar" ~/.config/waybar/'
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 complete -o bashdefault -o default -o nospace -F __git_wrap__git_main config
 _completion_loader git
-
-alias rts='cd ~/programming/go/RTS-Game-Engine'
-
-alias clearnamespace='kubectl delete namespace $(currentnamespace) ; kubectl create namespace $(currentnamespace)'
-alias currentnamespace="kubectl config view --minify -o jsonpath='{..namespace}'; echo"
-alias getnamespace=currentnamespace
 
 alias ta='tmux attach'
 
@@ -69,10 +66,13 @@ function clusternodes() {
 	watch "kubectl get pods -o custom-columns=:.metadata.name --no-headers --selector 'app.kubernetes.io/name=my-cluster' | parallel -k 'echo {}; kubectl exec {} -c redis-node -- cli cluster nodes | sort; echo ""'"
 }
 
+
+alias clearnamespace='kubectl delete namespace $(getnamespace) ; kubectl create namespace $(getnamespace)'
+alias getnamespace="kubectl config view --minify -o jsonpath='{..namespace}'; echo"
 function setnamespace() {
 	if [[ -z "$1" ]]; then
-		echo "Using namespace ermahna"
-		kubectl config set-context --current --namespace ermahna > /dev/null
+		echo "Using namespace default"
+		kubectl config set-context --current --namespace default > /dev/null
 		return
 	fi
 
